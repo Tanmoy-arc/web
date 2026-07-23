@@ -676,23 +676,38 @@ body {
   font-size: 0.8rem;
   font-weight: 600;
 }
+
 #homeProductRow {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  padding-bottom: 15px;
+  display: flex !important;
+  gap: 24px !important;
+  overflow-x: auto !important;
+  padding: 10px 5px 20px 5px !important;
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
 }
+
 .product-card {
-  flex: 0 0 280px; 
+  flex: 0 0 280px !important;
+  min-width: 280px !important;
+  max-width: 280px !important;
+  scroll-snap-align: start;
+  overflow: hidden; 
 }
-#homeProductRow {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  padding-bottom: 15px;
-  scroll-behavior: smooth;
+
+#homeProductRow::-webkit-scrollbar {
+  height: 8px;
 }
-.product-card {
-  flex: 0 0 280px; 
+
+#homeProductRow::-webkit-scrollbar-track {
+  background: #0f1219;
+  border-radius: 10px;
+}
+
+#homeProductRow::-webkit-scrollbar-thumb {
+  background: #d4af37; 
+  border-radius: 10px;
+}
+
+#homeProductRow::-webkit-scrollbar-thumb:hover {
+  background: #f1c40f;
 }
