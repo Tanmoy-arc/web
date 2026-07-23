@@ -75,7 +75,9 @@ function exportProductsFile() {
 
 function renderProducts() {
   homeProductRow.innerHTML = '';
-  const homeItems = products.slice(0, 4);
+  
+  const shuffled = [...products].sort(() => 0.5 - Math.random());
+  const homeItems = shuffled.slice(0, 8);
 
   if (homeItems.length === 0) {
     homeProductRow.innerHTML = `<p style="color: #8c93a0; grid-column: 1/-1;">No products available yet.</p>`;
