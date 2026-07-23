@@ -25,9 +25,14 @@ const imageToCrop = document.getElementById('imageToCrop');
 
 async function loadProducts() {
   try {
-    const response = await fetch('products.json');
+    const response = await fetch('data/products.json');
     if (response.ok) {
       products = await response.json();
+    } else {
+      const fallbackResponse = await fetch('products.json');
+      if (fallbackResponse.ok) {
+        products = await fallbackResponse.json();
+      }
     }
   } catch (e) {
     products = JSON.parse(localStorage.getItem('noor_products')) || [];
