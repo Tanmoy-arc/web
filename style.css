@@ -686,3 +686,13 @@ body {
 .product-card {
   flex: 0 0 280px; 
 }
+#homeProductRow {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 15px;
+  scroll-behavior: smooth;
+}
+.product-card {
+  flex: 0 0 280px; 
+}
