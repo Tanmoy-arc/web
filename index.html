@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noor Surgical</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
+  <div class="bg-shape shape3"></div>
+
+  <nav class="navbar">
+    <div class="logo-container">
+      <img src="Logo.jpg" alt="Noor Surgical Logo" class="nav-logo-img">
+      <span class="logo-text">NOOR SURGICAL</span>
+    </div>
+    
+    <div class="nav-buttons">
+      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="products">Products</button>
+      <button class="nav-btn" data-page="contact">Contact</button>
+    </div>
+
+    <div class="nav-auth">
+      <button class="nav-btn upload-btn hidden" id="btnOpenUpload">+ Upload Product</button>
+      <button class="nav-btn login-btn" id="btnOpenLogin">Login</button>
+    </div>
+  </nav>
+
+  <div id="loginModal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" id="btnCloseLogin">&times;</button>
+      <h3>Admin Login</h3>
+      <p class="modal-subtitle">Enter credentials to gain product management privileges.</p>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="userId">User ID</label>
+          <input type="text" id="userId" placeholder="Enter User ID" required>
+        </div>
+        <div class="form-group">
+          <label for="userPassword">Password</label>
+          <input type="password" id="userPassword" placeholder="Enter Password" required>
+        </div>
+        <div id="loginError" class="form-error hidden">Invalid User ID or Password!</div>
+        <button type="submit" class="btn-submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="uploadModal" class="modal-overlay">
+    <div class="modal-card modal-large">
+      <button class="modal-close" id="btnCloseUpload">&times;</button>
+      <h3>Upload New Product</h3>
+      <p class="modal-subtitle">Crop your image and add product details below.</p>
+      
+      <form id="uploadForm">
+        <div class="form-group">
+          <label for="prodTitle">Product Title</label>
+          <input type="text" id="prodTitle" placeholder="e.g. Lumbar Support Belt" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="prodDesc">Description</label>
+          <textarea id="prodDesc" rows="2" placeholder="Brief details about the item..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="prodImage">Select Product Image</label>
+          <input type="file" id="prodImage" accept="image/*">
+        </div>
+
+        <div id="cropArea" class="crop-container hidden">
+          <p class="crop-instruction">Adjust crop box (Recommended: 1:1 Square Ratio)</p>
+          <div class="img-preview-wrapper">
+            <img id="imageToCrop" src="" alt="Crop Preview">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmitProduct">Upload Product</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="homePage" class="page-section active">
+    <header class="hero">
+      <div class="hero-logo-wrapper">
+        <img src="Logo.jpg"Noor Surgical Emblem" class="hero-logo-img">
+      </div>
+      <h1>Noor Surgical</h1>
+      <p>Authorized Orthopedic Supports, Surgical Braces & Medical Care Products. Premium Quality Comfort & Recovery Solutions.</p>
+    </header>
+
+    <main class="container">
+      <div class="section-header-flex">
+        <h2 class="section-title">Featured Products</h2>
+        <button class="btn-see-all" id="btnSeeAll">View All Products →</button>
+      </div>
+      
+      <div class="home-product-grid" id="homeProductRow"></div>
+    </main>
+  </div>
+
+  <div id="productsPage" class="page-section">
+    <div class="container section-padding">
+      <div class="grid-toolbar">
+        <div>
+          <h2 class="grid-page-title">Products Catalogue</h2>
+          <span class="grid-item-count" id="productCountText">0 items found</span>
+        </div>
+      </div>
+
+      <div class="product-grid" id="mainProductGrid"></div>
+    </div>
+  </div>
+
+  <div id="contactPage" class="page-section">
+    <div class="container section-padding">
+      <div class="contact-card">
+        <h2>Contact Us</h2>
+        <p class="contact-subtitle">Please follow the instructions below to get in touch with our team for inquiries, bulk orders, or support.</p>
+        
+        <div class="contact-steps">
+          <div class="step-box">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Direct Phone Line</h4>
+              <p>Call our support helpline directly at <strong>(+88)01907899597</strong> available Mon-Fri, 9am - 6pm EST.</p>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Visit Store / Pickup</h4>
+              <p>For urgent medical supply pickups, visit our main office location at 123 Health Avenue, Suite 400.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="developer-card">
+        <span class="badge">SYSTEM ARCHITECT</span>
+        <h2>Contact Developer</h2>
+        
+        <div class="dev-grid">
+          <div class="dev-info-box">
+            <span class="dev-label">DEVELOPER</span>
+            <span class="dev-value">Tanmoy Mondal</span>
+          </div>
+          <div class="dev-info-box">
+            <span class="dev-label">PHONE</span>
+            <span class="dev-value">01990848669</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bottom-marquee-footer">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+      developed by lead exploitation analyst of Nightmare Eclipse Tanmoy Mondal.
+    </marquee>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
