@@ -23,19 +23,25 @@ const prodImageInput = document.getElementById('prodImage');
 const cropArea = document.getElementById('cropArea');
 const imageToCrop = document.getElementById('imageToCrop');
 
+const productDetailModal = document.getElementById('productDetailModal');
+const btnCloseDetail = document.getElementById('btnCloseDetail');
+const detailImg = document.getElementById('detailImg');
+const detailTitle = document.getElementById('detailTitle');
+const detailDesc = document.getElementById('detailDesc');
+
 async function loadProducts() {
   try {
-    const response = await fetch('data/products.json');
-    if (response.ok) {
-      products = await response.json();
-    } else {
-      const fallbackResponse = await fetch('products.json');
-      if (fallbackResponse.ok) {
-        products = await fallbackResponse.json();
-      }
+    const res = await fetch('data/products.json');
+    if (!res.ok) throw new Error('data/products.json not found');
+    products = await res.json();
+  } catch (err) {
+    try {
+      const resFallback = await fetch('products.json');
+      if (!resFallback.ok) throw new Error('products.json not found');
+      products = await resFallback.json();
+    } catch (fallbackErr) {
+      products = JSON.parse(localStorage.getItem('noor_products')) || [];
     }
-  } catch (e) {
-    products = JSON.parse(localStorage.getItem('noor_products')) || [];
   }
   renderProducts();
 }
@@ -73,6 +79,31 @@ function exportProductsFile() {
   downloadAnchor.remove();
 }
 
+window.openProductDetail = function(id) {
+  const prod = products.find(p => p.id === id);
+  if (!prod) return;
+
+  if (detailImg) detailImg.src = prod.image;
+  if (detailTitle) detailTitle.textContent = prod.title;
+  if (detailDesc) detailDesc.textContent = prod.desc || "No description available.";
+
+  if (productDetailModal) productDetailModal.classList.add('active');
+};
+
+if (btnCloseDetail) {
+  btnCloseDetail.addEventListener('click', () => {
+    productDetailModal.classList.remove('active');
+  });
+}
+
+if (productDetailModal) {
+  productDetailModal.addEventListener('click', (e) => {
+    if (e.target === productDetailModal) {
+      productDetailModal.classList.remove('active');
+    }
+  });
+}
+
 function renderProducts() {
   homeProductRow.innerHTML = '';
   
@@ -85,6 +116,7 @@ function renderProducts() {
     homeItems.forEach(item => {
       const card = document.createElement('div');
       card.className = 'product-card';
+      card.setAttribute('onclick', `openProductDetail('${item.id}')`);
       card.innerHTML = `
         <div class="card-image-wrapper">
           <img src="${item.image}" alt="${item.title}" class="product-img">
@@ -93,7 +125,7 @@ function renderProducts() {
           <h3 class="product-title">${item.title}</h3>
           <p class="product-description">${item.desc}</p>
         </div>
-        ${isAdmin ? `<div class="product-footer"><button class="btn-delete" onclick="deleteProduct('${item.id}')">Delete</button></div>` : ''}
+        ${isAdmin ? `<div class="product-footer"><button class="btn-delete" onclick="event.stopPropagation(); deleteProduct('${item.id}')">Delete</button></div>` : ''}
       `;
       homeProductRow.appendChild(card);
     });
@@ -108,6 +140,7 @@ function renderProducts() {
     products.forEach(item => {
       const card = document.createElement('div');
       card.className = 'grid-card';
+      card.setAttribute('onclick', `openProductDetail('${item.id}')`);
       card.innerHTML = `
         <div class="grid-image-box">
           <img src="${item.image}" alt="${item.title}" class="grid-img">
@@ -117,7 +150,7 @@ function renderProducts() {
             <h4 class="grid-title">${item.title}</h4>
           </div>
           <div class="grid-actions">
-            ${isAdmin ? `<button class="btn-delete" onclick="deleteProduct('${item.id}')">Delete</button>` : ''}
+            ${isAdmin ? `<button class="btn-delete" onclick="event.stopPropagation(); deleteProduct('${item.id}')">Delete</button>` : ''}
           </div>
         </div>
       `;
@@ -246,3 +279,24 @@ window.deleteProduct = function(id) {
 };
 
 loadProducts();
+
+document.addEventListener('mousemove', (e) => {
+  const eyes = document.querySelectorAll('.eye');
+
+  eyes.forEach((eye) => {
+    const pupil = eye.querySelector('.pupil');
+    const rect = eye.getBoundingClientRect();
+    
+    const eyeX = rect.left + rect.width / 2;
+    const eyeY = rect.top + rect.height / 2;
+    
+    const angle = Math.atan2(e.clientY - eyeY, e.clientX - eyeX);
+    
+    const maxRadius = (rect.width / 2) - 12; 
+    
+    const posX = Math.cos(angle) * maxRadius;
+    const posY = Math.sin(angle) * maxRadius;
+
+    pupil.style.transform = `translate(${posX}px, ${posY}px)`;
+  });
+});
